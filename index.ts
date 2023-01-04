@@ -32,11 +32,8 @@ function dateToString(date: Date) {
 }
 
 // Ici on génère le nombre d'utilisateur aléatoire
-var users = generateRandomUser(10);
-
-console.log('Liste des utilisateurs', users);
-
-var responseHttp: Observable<Person[]> = of(users);
+var responseHttp: Observable<Person[]> = of(generateRandomUser(10));
+responseHttp.subscribe((res: Person[]) => console.log(res));
 
 // Comprendre les observables
 
@@ -53,20 +50,18 @@ responseHttp.pipe(
 );
 
 // que va faire cette observable une fois résolu
-responseHttp
-  .pipe(
-    filter((persons: Person[]) => {
-      return !!persons.find((person) => person.size > 205);
-    }),
-    map((persons: Person[]) => {
-      return persons.filter(
-        (person) =>
-          (person.size < 190 && person.size > 180) ||
-          (person.weight > 80 && person.weight < 120)
-      );
-    })
-  )
-  .subscribe(console.log);
+responseHttp.pipe(
+  filter((persons: Person[]) => {
+    return !!persons.find((person) => person.size > 205);
+  }),
+  map((persons: Person[]) => {
+    return persons.filter(
+      (person) =>
+        (person.size < 190 && person.size > 180) ||
+        (person.weight > 80 && person.weight < 120)
+    );
+  })
+);
 
 // Première étape: les tris
 
